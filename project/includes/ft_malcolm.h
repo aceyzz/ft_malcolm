@@ -38,7 +38,4 @@ bool	is_valid_ip(const char *ip);
 bool	is_valid_mac(const char *mac);
 bool	is_local_ip(const char *ip);
 
-/* exit.c */
-void	exit_msg(char *msg, char *added, int fd, int exit_code);
-
 #endif
