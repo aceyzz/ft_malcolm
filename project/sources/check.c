@@ -6,26 +6,28 @@ static int	check_and_report(int condition, const char *err_fmt, const char *ok_f
 	{
 		dprintf(STDOUT_FILENO, REDD "[ERROR] " RST);
 		dprintf(STDERR_FILENO, err_fmt, val1, val2);
-		return 1;
+		return (EXIT_FAILURE);
 	}
 	if (DEBUG && ok_fmt)
 	{
 		dprintf(STDOUT_FILENO, LIME "[DEBUG] " RST);
 		dprintf(STDOUT_FILENO, ok_fmt, val1, val2);
 	}
-	return 0;
+	return (EXIT_SUCCESS);
 }
 
 static int	check_user(void)
 {
-	int uid = getuid();
-	return check_and_report(uid, "This program must be run as root (" REDD "euid = %d" RST ")\n", NULL, (const char *)(intptr_t)uid, NULL);
+	if (geteuid())
+		return check_and_report(1, "This program must be run as root (" REDD "euid = %d" RST ")\n", NULL, (const char *)(intptr_t)geteuid(), NULL);
+	return check_and_report(0, NULL, "Running as root (" LIME "euid = %d" RST ")\n", (const char *)(intptr_t)geteuid(), NULL);
 }
 
 static int	check_args(int argc)
 {
-	return check_and_report(argc != 5,
-		"Invalid number of arguments -> Usage: ./ft_malcolm <IP source> <MAC source> <IP target> <MAC target>\n", NULL, NULL, NULL);
+	if (argc != 5)
+		return check_and_report(argc != 5, "Invalid number of arguments -> Usage: ./ft_malcolm <IP source> <MAC source> <IP target> <MAC target>\n", NULL, NULL, NULL);
+	return check_and_report(0, NULL, "Correct number of arguments (" LIME "%d" RST ")\n", (const char *)(intptr_t)argc, NULL);
 }
 
 static int	check_ips(char **argv)
