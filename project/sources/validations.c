@@ -64,3 +64,27 @@ bool	is_valid_mac(const char *mac)
 	}
 	return (colons == 5 && digits == 2);
 }
+
+bool	is_local_ip(const char *ip)
+{
+	struct ifaddrs	*ifaddr, *ifa;
+	char			buf[INET_ADDRSTRLEN];
+
+	if (getifaddrs(&ifaddr) == -1)
+		return (false);
+	for (ifa = ifaddr; ifa != NULL; ifa = ifa->ifa_next)
+	{
+		if (!ifa->ifa_addr || ifa->ifa_addr->sa_family != AF_INET)
+			continue;
+		if (inet_ntop(AF_INET, &((struct sockaddr_in *)ifa->ifa_addr)->sin_addr,
+				buf, sizeof(buf)) == NULL)
+			continue;
+		if (strcmp(buf, ip) == 0)
+		{
+			freeifaddrs(ifaddr);
+			return (true);
+		}
+	}
+	freeifaddrs(ifaddr);
+	return (false);
+}

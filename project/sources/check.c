@@ -1,36 +1,63 @@
 #include "ft_malcolm.h"
 
-static inline void	check_user(void)
+static int	check_and_report(int condition, const char *err_fmt, const char *ok_fmt, const char *val1, const char *val2)
 {
-	if (getuid())
-		exit_msg("Error: You must be root to run this program.\n", 2, 1);
+	if (condition)
+	{
+		dprintf(STDOUT_FILENO, REDD "[ERROR] " RST);
+		dprintf(STDERR_FILENO, err_fmt, val1, val2);
+		return 1;
+	}
+	if (DEBUG && ok_fmt)
+	{
+		dprintf(STDOUT_FILENO, LIME "[DEBUG] " RST);
+		dprintf(STDOUT_FILENO, ok_fmt, val1, val2);
+	}
+	return 0;
 }
 
-static inline void	check_args(int argc)
+static int	check_user(void)
 {
-	if (argc != 5)
-		exit_msg("Error: Invalid number of arguments.\n", 2, 1);
+	int uid = getuid();
+	return check_and_report(uid, "This program must be run as root (" REDD "euid = %d" RST ")\n", NULL, (const char *)(intptr_t)uid, NULL);
 }
 
-static inline void	check_ips(char **argv)
+static int	check_args(int argc)
+{
+	return check_and_report(argc != 5,
+		"Invalid number of arguments -> Usage: ./ft_malcolm <IP source> <MAC source> <IP target> <MAC target>\n", NULL, NULL, NULL);
+}
+
+static int	check_ips(char **argv)
 {
 	if (!is_valid_ip(argv[1]) || !is_valid_ip(argv[3]))
-		exit_msg("Error: Invalid IP address format.\n", 2, 1);
+	{
+		if (!is_valid_ip(argv[1]))
+			return check_and_report(1, "Invalid IP source address format (" REDD "%s" RST ")\n", NULL, argv[1], NULL);
+		return check_and_report(1, "Invalid IP target address format (" REDD "%s" RST ")\n", NULL, argv[3], NULL);
+	}
+	return check_and_report(0, NULL, "Valid IP address formats (" LIME "%s" RST ", " LIME "%s" RST ")\n", argv[1], argv[3]);
 }
 
-static inline void	check_mac(char **argv)
+static int	check_macs(char **argv)
 {
 	if (!is_valid_mac(argv[2]) || !is_valid_mac(argv[4]))
-		exit_msg("Error: Invalid MAC address format.\n", 2, 1);
+	{
+		if (!is_valid_mac(argv[2]))
+			return check_and_report(1, "Invalid MAC source address format (" REDD "%s" RST ")\n", NULL, argv[2], NULL);
+		return check_and_report(1, "Invalid MAC target address format (" REDD "%s" RST ")\n", NULL, argv[4], NULL);
+	}
+	return check_and_report(0, NULL, "Valid MAC address formats (" LIME "%s" RST ", " LIME "%s" RST ")\n", argv[2], argv[4]);
 }
 
-void	checks(int argc, char **argv)
+static int	check_local_ip(char **argv)
 {
-	if (DEBUG)
-		test_args();
-	check_user();
-	check_args(argc);
-	check_ips(argv);
-	check_mac(argv);
-	return ;
+	if (!is_local_ip(argv[1]))
+		return check_and_report(1, "IP source address does not belong to any local interface (" REDD "%s" RST ")\n", NULL, argv[1], NULL);
+	return check_and_report(0, NULL, "IP source address belongs to a local interface (" LIME "%s" RST ")\n", argv[1], NULL);
+}
+
+int	checks(int argc, char **argv)
+{
+	return (check_user() || check_args(argc) || check_ips(argv) || check_macs(argv) || check_local_ip(argv));
 }

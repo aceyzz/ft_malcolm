@@ -15,24 +15,30 @@
 # include <string.h>
 # include <stdbool.h>
 # include <stdlib.h>
+# include <stdint.h>
+# include <ifaddrs.h>
+# include <arpa/inet.h>
+# include <net/if.h>
+# include <netinet/in.h>
+# include <linux/if_packet.h>
+# include <time.h>
 
 # include "libft.h"
 # include "colors.h"
+# include "structs.h"
 
-# define DEBUG 0
+# define DEBUG 1
 
-void	exit_msg(char *msg, int fd, int exit_code);
-void	checks(int argc, char **argv);
+/* check.c */
+int		checks(int argc, char **argv);
 
 /* validations.c */
 bool	ft_ishex(char c);
 bool	is_valid_ip(const char *ip);
 bool	is_valid_mac(const char *mac);
-
-/* test.c */
-void	test_args(void);
+bool	is_local_ip(const char *ip);
 
 /* exit.c */
-void	exit_msg(char *msg, int fd, int exit_code);
+void	exit_msg(char *msg, char *added, int fd, int exit_code);
 
 #endif
