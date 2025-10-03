@@ -4,7 +4,7 @@ static int	check_and_report(int valid_condition, const char *ok_msg, const char 
 {
 	if (!valid_condition)
 	{
-		dprintf(STDOUT_FILENO, REDD "[ERROR] " RST);
+		dprintf(STDERR_FILENO, REDD "[ERROR] " RST);
 		dprintf(STDERR_FILENO, ko_msg, val1, val2);
 		return (EXIT_FAILURE);
 	}
@@ -16,9 +16,9 @@ static int	check_and_report(int valid_condition, const char *ok_msg, const char 
 	return (EXIT_SUCCESS);
 }
 
-static int	check(int valid_condition, const char *err_fmt, const char *ok_fmt, const char *val1, const char *val2)
+static int	check(int valid_condition, const char *ok_msg, const char *ko_msg, const char *val1, const char *val2)
 {
-	return (check_and_report(valid_condition, err_fmt, ok_fmt, val1, val2));
+	return (check_and_report(valid_condition, ok_msg, ko_msg, val1, val2));
 }
 
 int	checks(int argc, char **argv)
