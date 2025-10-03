@@ -4,7 +4,6 @@
 # include <stdlib.h>
 # include <unistd.h>
 # include <fcntl.h>
-# include <string.h>
 # include <stdio.h>
 # include <errno.h>
 # include <sys/types.h>
@@ -14,7 +13,6 @@
 # include <ctype.h>
 # include <string.h>
 # include <stdbool.h>
-# include <stdlib.h>
 # include <stdint.h>
 # include <ifaddrs.h>
 # include <arpa/inet.h>
