@@ -57,7 +57,7 @@ void	debug_print_data(t_data *data)
 	printf(CYAN "  ↳ ARGS : " RST "%p\n", (void *)&data->args);
 	printf(CYAN "  ↳ INTERFACE : " RST "%p\n", (void *)&data->interface);
 	printf(CYAN "  ↳ REQUEST : " RST "%p\n", (void *)&data->request);
-	printf(CYAN "  ↳ ALREADY_SENT : " RST "%s\n", data->already_sent ? "true" : "false");
-	printf(CYAN "  ↳ TIMEOUT_SECONDS : " RST "%d\n", data->timeout_seconds);
-	printf(CYAN "  ↳ START_TIME : " RST "%ld\n", data->start_time);
+	printf(CYAN "  ↳ already_sent : " RST "%s\n", data->already_sent ? "true" : "false");
+	printf(CYAN "  ↳ timeout_seconds : " RST "%d\n", data->timeout_seconds);
+	printf(CYAN "  ↳ start_time : " RST "%ld\n", data->start_time);
 }

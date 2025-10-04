@@ -40,6 +40,9 @@ bool	is_local_ip(const char *ip);
 /* initializer.c */
 int		init_data(t_data *data, char **argv);
 
+/* interface.c */
+int		iface_from_ip(const char *ip_str, t_interface *iface);
+
 /* debug.c */
 void	debug_print_data(t_data *data);
 void	debug_print_args(t_args *args);

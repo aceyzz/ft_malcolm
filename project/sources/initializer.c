@@ -132,6 +132,9 @@ int	init_data(t_data *data, char **argv)
 	data->timeout_seconds = 0;
 	data->start_time = time(NULL);
 
+	if (iface_from_ip(data->args.ip_source_str, &data->interface))
+		return (1);
+
 	if (DEBUG)
 		debug_print_data(data);
 	

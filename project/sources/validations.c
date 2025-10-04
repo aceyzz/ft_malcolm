@@ -19,7 +19,7 @@ bool	is_local_ip(const char *ip)
 		if (inet_ntop(AF_INET, &((struct sockaddr_in *)ifa->ifa_addr)->sin_addr,
 				buf, sizeof(buf)) == NULL)
 			continue;
-		if (strcmp(buf, ip) == 0)
+		if (ft_strcmp(buf, ip) == 0)
 		{
 			freeifaddrs(ifaddr);
 			return (true);
