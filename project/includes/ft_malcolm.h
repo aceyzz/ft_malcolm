@@ -29,6 +29,7 @@
 # include "structs.h"
 
 # define DEBUG 1
+# define REPLY_COUNT 7
 
 /* pour capture signaux */
 extern volatile sig_atomic_t	g_stop;
@@ -50,6 +51,10 @@ int		open_iface_socket(t_interface *iface);
 
 /* signals.c */
 int		setup_signals(void);
+
+/* comm.c */
+int		parse_arp_request(const uint8_t *buf, ssize_t len, t_data *data);
+int		send_arp_reply(t_data *data);
 
 /* clean.c */
 void	cleanup(t_data *data);

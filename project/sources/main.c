@@ -26,7 +26,21 @@ int main(int argc, char **argv, char **env)
 	// lancement du programme (boucle de wait requete ARP)
 	while (!g_stop)
 	{
-		;
+		uint8_t buf[2048];
+		ssize_t n = recvfrom(data.interface.socket_fd, buf, sizeof(buf), 0, NULL, NULL);
+		if (n < 0)
+		{
+			if (errno == EINTR)
+				continue;
+			break;
+		}
+		if (parse_arp_request(buf, n, &data) == 0)
+		{
+			for (int i = 0; i < REPLY_COUNT && !g_stop; i++)
+				send_arp_reply(&data);
+			data.already_sent = true;
+			break;
+		}
 	}
 
 	// nettoyage et sortie
