@@ -4,15 +4,15 @@ static int	check_and_report(int valid_condition, const char *ok_msg, const char 
 {
 	if (!valid_condition) {
 		dprintf(STDERR_FILENO, REDD "[ERROR] " RST);
-		dprintf(STDERR_FILENO, ko_msg, val);
+		dprintf(STDERR_FILENO, ko_msg ? ko_msg : "Unknown error", val);
 		if (errno != 0)
-			dprintf(STDERR_FILENO, REDD "(errno) -> %s\n" RST, strerror(errno));
+			dprintf(STDERR_FILENO, REDD "(errno) -> %s\n" RST, strerror(errno) ? strerror(errno) : "Unknown error");
 		errno = 0;
 		return (EXIT_FAILURE);
 	}
 	if (DEBUG && ok_msg) {
 		dprintf(STDOUT_FILENO, LIME "[DEBUG] " RST);
-		dprintf(STDOUT_FILENO, ok_msg, val);
+		dprintf(STDOUT_FILENO, ok_msg ? ok_msg : "Unknown message", val);
 	}
 	return (EXIT_SUCCESS);
 }

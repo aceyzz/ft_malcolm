@@ -11,15 +11,18 @@ int main(int argc, char **argv, char **env)
 {
 	t_data	data;
 
-	// verifications initiales
+	// verifs initiales
 	if (first_checks(argc, env))
 		return (1);
 
-	// init structs de datas
+	// init structs de data - args - interface - request + verifs
 	if (init_data(&data, argv))
 		return (1);
 
 	// gestion des signaux
+	if (setup_signals())
+		return (1);
+
 	// lancement du programme (boucle de wait requete ARP)
 	// nettoyage et sortie
 

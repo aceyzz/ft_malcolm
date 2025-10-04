@@ -21,6 +21,7 @@
 # include <linux/if_packet.h>
 # include <linux/if_ether.h>
 # include <linux/if_arp.h>
+# include <signal.h>
 # include <time.h>
 
 # include "libft.h"
@@ -28,6 +29,9 @@
 # include "structs.h"
 
 # define DEBUG 1
+
+/* pour capture signaux */
+extern volatile sig_atomic_t	g_stop;
 
 /* check.c */
 int		check(int valid_condition, const char *ok_msg, const char *ko_msg, const char *val1);
@@ -43,6 +47,9 @@ int		init_data(t_data *data, char **argv);
 /* interface.c */
 int		iface_from_ip(const char *ip_str, t_interface *iface);
 int		open_iface_socket(t_interface *iface);
+
+/* signals.c */
+int		setup_signals(void);
 
 /* debug.c */
 void	debug_print_data(t_data *data);
