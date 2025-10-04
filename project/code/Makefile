@@ -55,7 +55,10 @@ fclean: clean
 
 re: fclean all
 
+run: all
+	./$(NAME) 10.10.0.3 02:42:0a:0a:00:07 10.10.0.5 02:42:0a:0a:00:05
+
 leaks: all
-	sudo -E valgrind --leak-check=full --show-leak-kinds=all ./ft_malcolm 192.168.64.3 00:11:22:33:44:55 192.168.64.5 a2:4c:49:b4:fd:0e
+	valgrind --leak-check=full --show-leak-kinds=all ./$(NAME) 10.10.0.3 02:42:0a:0a:00:07 10.10.0.5 02:42:0a:0a:00:05
 
 .PHONY: all clean fclean re leaks

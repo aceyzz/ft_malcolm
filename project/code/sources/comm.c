@@ -111,5 +111,5 @@ int	send_arp_reply(t_data *data)
 
 	char *raw_packet = packet_to_string((const uint8_t *)&packet, sizeof(packet));
 	sent = sendto(data->interface.socket_fd, &packet, sizeof(packet), 0, (struct sockaddr *)&dst, sizeof(dst));
-	return (check(sent == (ssize_t)sizeof(packet), "Sent ARP reply to target\nRaw packet sent:\n  %s\n", "Failed to send ARP reply\nRaw packet:\n  %s\n", raw_packet));
+	return (check(sent == (ssize_t)sizeof(packet), "Sent ARP reply to target\n\033[0;38;2;255;215;0m[DEBUG] Raw packet sent:\n  %s\n", "Failed to send ARP reply\nRaw packet:\n  %s\n\033[0m", raw_packet));
 }

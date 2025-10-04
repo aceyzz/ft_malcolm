@@ -36,8 +36,7 @@ int main(int argc, char **argv, char **env)
 		}
 		if (parse_arp_request(buf, n, &data) == 0)
 		{
-			for (int i = 0; i < REPLY_COUNT && !g_stop; i++)
-				send_arp_reply(&data);
+			send_arp_reply(&data);
 			data.already_sent = true;
 			break;
 		}

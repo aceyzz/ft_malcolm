@@ -18,9 +18,11 @@
 # include <arpa/inet.h>
 # include <net/if.h>
 # include <netinet/in.h>
+#if defined(__linux__)
 # include <linux/if_packet.h>
 # include <linux/if_ether.h>
 # include <linux/if_arp.h>
+#endif
 # include <signal.h>
 # include <time.h>
 
@@ -29,7 +31,6 @@
 # include "structs.h"
 
 # define DEBUG 1
-# define REPLY_COUNT 7
 
 /* pour capture signaux */
 extern volatile sig_atomic_t	g_stop;

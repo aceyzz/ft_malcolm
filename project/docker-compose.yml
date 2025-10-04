@@ -1,0 +1,49 @@
+networks:
+  labnet:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 10.10.0.0/24
+
+services:
+  attacker:
+    build: ./vm-attacker
+    container_name: attacker
+    hostname: attacker
+    mac_address: "02:42:0a:0a:00:03"
+    networks:
+      labnet:
+        ipv4_address: 10.10.0.3
+    cap_add:
+      - NET_ADMIN
+      - NET_RAW
+    volumes:
+      - ./code:/work
+    working_dir: /work
+    command: ["sleep", "infinity"]
+
+  victim:
+    build: ./vm-victim
+    container_name: victim
+    hostname: victim
+    mac_address: "02:42:0a:0a:00:05"
+    networks:
+      labnet:
+        ipv4_address: 10.10.0.5
+    cap_add:
+      - NET_ADMIN
+      - NET_RAW
+    command: ["sleep", "infinity"]
+
+  bystander:
+    build: ./vm-bystander
+    container_name: bystander
+    hostname: bystander
+    mac_address: "02:42:0a:0a:00:07"
+    networks:
+      labnet:
+        ipv4_address: 10.10.0.7
+    cap_add:
+      - NET_ADMIN
+      - NET_RAW
+    command: ["sleep", "infinity"]
