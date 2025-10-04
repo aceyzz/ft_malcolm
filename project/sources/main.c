@@ -24,8 +24,14 @@ int main(int argc, char **argv, char **env)
 		return (1);
 
 	// lancement du programme (boucle de wait requete ARP)
-	// nettoyage et sortie
+	while (!g_stop)
+	{
+		;
+	}
 
-	printf(LIME "\n[DEBUG] Tout est OK Brother\n\n" RST );
+	// nettoyage et sortie
+	cleanup(&data);
+
+	printf(LIME SOUL "\n[END] TOUT EST OK BROTHER\n\n" RST );
     return (0);
 }

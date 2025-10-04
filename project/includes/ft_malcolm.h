@@ -51,6 +51,9 @@ int		open_iface_socket(t_interface *iface);
 /* signals.c */
 int		setup_signals(void);
 
+/* clean.c */
+void	cleanup(t_data *data);
+
 /* debug.c */
 void	debug_print_data(t_data *data);
 void	debug_print_args(t_args *args);

@@ -2,21 +2,12 @@
 
 volatile sig_atomic_t	g_stop = 0;
 
-static const char *signal_to_string(int sig)
-{
-	switch (sig) {
-		case SIGINT: return "SIGINT";
-		case SIGTERM: return "SIGTERM";
-		case SIGQUIT: return "SIGQUIT";
-		case SIGHUP: return "SIGHUP";
-		default: return "UNKNOWN";
-	}
-}
-
 static void	on_signal(int sig)
 {
+	(void)sig;
 	g_stop = 1;
-	check(true, "\'%s\' signal received, preparing to exit...\n", NULL, signal_to_string(sig));
+	const char msg[] = "\033[0;38;2;255;255;0m[SIGNAL] Exiting...\n\033[0m";
+	write(STDERR_FILENO, msg, sizeof(msg) - 1);
 }
 
 int	setup_signals(void)
