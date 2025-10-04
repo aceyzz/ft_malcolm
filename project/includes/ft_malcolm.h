@@ -19,6 +19,8 @@
 # include <net/if.h>
 # include <netinet/in.h>
 # include <linux/if_packet.h>
+# include <linux/if_ether.h>
+# include <linux/if_arp.h>
 # include <time.h>
 
 # include "libft.h"
@@ -28,12 +30,20 @@
 # define DEBUG 1
 
 /* check.c */
-int		checks(int argc, char **argv);
+int		check(int valid_condition, const char *ok_msg, const char *ko_msg, const char *val1);
+int		first_checks(int argc, char **env);
 
 /* validations.c */
 bool	ft_ishex(char c);
-bool	is_valid_ip(const char *ip);
-bool	is_valid_mac(const char *mac);
 bool	is_local_ip(const char *ip);
+
+/* initializer.c */
+int		init_data(t_data *data, char **argv);
+
+/* debug.c */
+void	debug_print_data(t_data *data);
+void	debug_print_args(t_args *args);
+void	debug_print_interface(t_interface *iface);
+void	debug_print_request(t_request *req);
 
 #endif

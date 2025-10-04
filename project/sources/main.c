@@ -7,12 +7,18 @@
 	argv[4] : mac target
 */
 
-int main(int argc, char **argv)
+int main(int argc, char **argv, char **env)
 {
+	t_data	data;
+
 	// verifications initiales
-	if (checks(argc, argv))
+	if (first_checks(argc, env))
 		return (1);
-	// init des structure de datas (a definir)
+
+	// init des structure de datas
+	if (init_data(&data, argv))
+		return (1);
+
 	// gestion des signaux
 	// lancement du programme (boucle de wait requete ARP)
 	// nettoyage et sortie

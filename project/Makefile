@@ -10,8 +10,8 @@ INCDIR      := includes
 LIBFT_DIR   := $(INCDIR)/libft
 LIBFT_A     := $(LIBFT_DIR)/libft.a
 
-CC          := cc
-CFLAGS      := -Wall -Wextra -Werror
+CC          := gcc
+CFLAGS      := -Wall -Wextra -Werror -g
 CPPFLAGS    := -I$(INCDIR) -I$(LIBFT_DIR)
 RM          := rm -rf
 MAKEFLAGS   := --no-print-directory

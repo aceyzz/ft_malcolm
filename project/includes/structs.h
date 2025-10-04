@@ -51,7 +51,6 @@ typedef struct s_data {
     bool		already_sent;
     int			timeout_seconds;
     time_t		start_time;
-    int			verbose;
 }	t_data;
 
 #endif

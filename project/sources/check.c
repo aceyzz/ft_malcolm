@@ -2,67 +2,47 @@
 
 static int	check_and_report(int valid_condition, const char *ok_msg, const char *ko_msg, const char *val)
 {
-	if (!valid_condition)
-	{
+	if (!valid_condition) {
 		dprintf(STDERR_FILENO, REDD "[ERROR] " RST);
 		dprintf(STDERR_FILENO, ko_msg, val);
 		return (EXIT_FAILURE);
 	}
-	if (DEBUG && ok_msg)
-	{
+	if (DEBUG && ok_msg) {
 		dprintf(STDOUT_FILENO, LIME "[DEBUG] " RST);
 		dprintf(STDOUT_FILENO, ok_msg, val);
 	}
 	return (EXIT_SUCCESS);
 }
 
-static int	check(int valid_condition, const char *ok_msg, const char *ko_msg, const char *val1)
+int	check(int valid_condition, const char *ok_msg, const char *ko_msg, const char *val1)
 {
 	return (check_and_report(valid_condition, ok_msg, ko_msg, val1));
 }
 
-int	checks(int argc, char **argv)
+static char *get_env_value(char **env, const char *key)
 {
-	if (check(getuid() == 0,
-			"Running as root\n",
-			"This program must be run as root\n",
-			NULL))
-		return (EXIT_FAILURE);
+	size_t key_len = ft_strlen(key);
+	for (int i = 0; env[i] != NULL; i++) {
+		if (ft_strncmp(env[i], key, key_len) == 0 && env[i][key_len] == '=') {
+			return (env[i] + key_len + 1);
+		}
+	}
+	return (NULL);
+}
 
+int	first_checks(int argc, char **env)
+{
+	char *user = get_env_value(env, "USER");
+
+	if (check(getuid() == 0,
+			"Sufficient privileges (" LIME "user: %s" RST ")\n",
+			"This program must be run as root (" REDD "user: %s" RST ")\n",
+			user ? user : "unknown") != EXIT_SUCCESS)
+		return (EXIT_FAILURE);
 	if (check(argc == 5,
 			"Correct number of arguments\n",
-			"Invalid number of arguments -> Usage: ./ft_malcolm <IP source> <MAC source> <IP target> <MAC target>\n",
-			NULL))
-		return (EXIT_FAILURE);
-
-	if (check(is_valid_ip(argv[1]),
-			"Valid IP source address format (" LIME "%s" RST ")\n",
-			"Invalid IP source address format (" REDD "%s" RST ")\n",
-			argv[1]))
-		return (EXIT_FAILURE);
-
-	if (check(is_valid_ip(argv[3]),
-			"Valid IP target address format (" LIME "%s" RST ")\n",
-			"Invalid IP target address format (" REDD "%s" RST ")\n",
-			argv[3]))
-		return (EXIT_FAILURE);
-
-	if (check(is_valid_mac(argv[2]),
-			"Valid MAC source address format (" LIME "%s" RST ")\n",
-			"Invalid MAC source address format (" REDD "%s" RST ")\n",
-			argv[2]))
-		return (EXIT_FAILURE);
-
-	if (check(is_valid_mac(argv[4]),
-			"Valid MAC target address format (" LIME "%s" RST ")\n",
-			"Invalid MAC target address format (" REDD "%s" RST ")\n",
-			argv[4]))
-		return (EXIT_FAILURE);
-
-	if (check(is_local_ip(argv[1]),
-			"IP source address belongs to a local interface (" LIME "%s" RST ")\n",
-			"IP source address does not belong to any local interface (" REDD "%s" RST ")\n",
-			argv[1]))
+			"Invalid number of arguments -> " REDD "%s" RST,
+			"Usage: ./ft_malcolm <IP source> <MAC source> <IP target> <MAC target>\n"))
 		return (EXIT_FAILURE);
 
 	return (EXIT_SUCCESS);
