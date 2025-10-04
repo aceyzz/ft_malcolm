@@ -59,3 +59,30 @@ int	iface_from_ip(const char *ip_str, t_interface *iface)
 	iface->sll.sll_ifindex = iface->if_index;
 	return (mac_ok ? 0 : 1);
 }
+
+int	open_iface_socket(t_interface *iface)
+{
+	int	fd;
+
+	if (!iface)
+		return (1);
+	fd = socket(AF_PACKET, SOCK_RAW, htons(ETH_P_ARP));
+	if (fd == -1)
+		return (1);
+	if (bind(fd, (struct sockaddr *)&iface->sll, sizeof(iface->sll)) == -1)
+	{
+		close(fd);
+		return (1);
+	}
+	iface->socket_fd = fd;
+	if (check(iface->socket_fd != -1,
+			"Raw socket opened successfully on interface (" LIME "%s" RST ")\n",
+			"Failed to open raw socket on interface (" REDD "%s" RST ")\n",
+			iface->if_name) != EXIT_SUCCESS)
+	{
+		close(fd);
+		iface->socket_fd = -1;
+		return (1);
+	}
+	return (0);
+}

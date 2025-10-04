@@ -132,7 +132,12 @@ int	init_data(t_data *data, char **argv)
 	data->timeout_seconds = 0;
 	data->start_time = time(NULL);
 
+	// trouver l'interface réseau correspondant à l'ip source
 	if (iface_from_ip(data->args.ip_source_str, &data->interface))
+		return (1);
+
+	// ouvrir le socket raw (pour reception et envoi sur couche 2)
+	if (open_iface_socket(&data->interface))
 		return (1);
 
 	if (DEBUG)

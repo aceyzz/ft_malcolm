@@ -5,6 +5,9 @@ static int	check_and_report(int valid_condition, const char *ok_msg, const char 
 	if (!valid_condition) {
 		dprintf(STDERR_FILENO, REDD "[ERROR] " RST);
 		dprintf(STDERR_FILENO, ko_msg, val);
+		if (errno != 0)
+			dprintf(STDERR_FILENO, REDD "(errno) -> %s\n" RST, strerror(errno));
+		errno = 0;
 		return (EXIT_FAILURE);
 	}
 	if (DEBUG && ok_msg) {

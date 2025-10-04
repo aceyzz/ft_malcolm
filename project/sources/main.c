@@ -15,7 +15,7 @@ int main(int argc, char **argv, char **env)
 	if (first_checks(argc, env))
 		return (1);
 
-	// init des structure de datas
+	// init structs de datas
 	if (init_data(&data, argv))
 		return (1);
 
@@ -23,6 +23,6 @@ int main(int argc, char **argv, char **env)
 	// lancement du programme (boucle de wait requete ARP)
 	// nettoyage et sortie
 
-	printf("OK Brother\n");
+	printf(LIME "\n[DEBUG] Tout est OK Brother\n\n" RST );
     return (0);
 }
