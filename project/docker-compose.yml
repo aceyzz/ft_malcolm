@@ -34,16 +34,3 @@ services:
       - NET_ADMIN
       - NET_RAW
     command: ["sleep", "infinity"]
-
-  bystander:
-    build: ./vm-bystander
-    container_name: bystander
-    hostname: bystander
-    mac_address: "02:42:0a:0a:00:07"
-    networks:
-      labnet:
-        ipv4_address: 10.10.0.7
-    cap_add:
-      - NET_ADMIN
-      - NET_RAW
-    command: ["sleep", "infinity"]

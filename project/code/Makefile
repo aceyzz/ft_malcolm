@@ -56,9 +56,9 @@ fclean: clean
 re: fclean all
 
 run: all
-	./$(NAME) 10.10.0.3 02:42:0a:0a:00:07 10.10.0.5 02:42:0a:0a:00:05
+	./$(NAME) 10.10.0.3 00:01:02:03:04:05 10.10.0.5 02:42:0a:0a:00:05
 
 leaks: all
-	valgrind --leak-check=full --show-leak-kinds=all ./$(NAME) 10.10.0.3 02:42:0a:0a:00:07 10.10.0.5 02:42:0a:0a:00:05
+	valgrind --leak-check=full --show-leak-kinds=all ./$(NAME) 10.10.0.3 00:01:02:03:04:05 10.10.0.5 02:42:0a:0a:00:05
 
 .PHONY: all clean fclean re leaks

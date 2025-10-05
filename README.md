@@ -61,25 +61,31 @@ Mettre en œuvre un **ARP spoofing/poisoning** minimal : attendre une **requê
 
 ## Lancement rapide (labo Docker)
 
-> Au mieux, **ouvrir 3 terminaux** (bystander / attacker / victim) pour visualiser l’attaque ARP dans un réseau isolé.
-
-### Terminal 1 — **bystander** : démarrer & sniffer
+### Lancer le labo
 ```bash
+git clone https://github.com/aceyzz/ft_malcolm.git
+cd ft_malcolm/project
 docker-compose up -d --build
-docker exec -it bystander bash
-tcpdump -i eth0 -n -e arp
-# On observe les requêtes ARP en broadcast de victim
 ```
 
-### Terminal 2 — **attacker** : compiler & lancer
+A ce stade, vous pouvez ouvrir 3 terminaux pour les VMs `attacker` (x2) et `victim` (1x).
+
+### Terminal 1 — **attacker** : compiler & lancer
 ```bash
 docker exec -it attacker bash
 make
 # options
-make run    # ./ft_malcolm 10.10.0.3 02:42:0a:0a:00:07 10.10.0.5 02:42:0a:0a:00:05
+make run    # ./ft_malcolm ...
 ./ft_malcolm <IP_SOURCE> <MAC_SOURCE> <IP_TARGET> <MAC_TARGET>
 make leaks  # valgrind --leak-check=full --show-leak-kinds=all ./ft_malcolm ...
 ```
+
+### Terminal 2 — **attacker** : monitorer ARP
+```bash
+docker exec -it attacker bash
+tcpdump -i eth0 -v
+```
+A ce stade, `tcpdump` monitore les échanges sur l’interface `eth0`. C'est ce qui va nous permettre de voir l'attaque arp en action.
 
 ### Terminal 3 — **victim** : nettoyer & pinger
 ```bash
@@ -90,6 +96,10 @@ ping -c 1 10.10.0.3
 ip neigh show
 # Sortie attendue : l’IP source (10.10.0.3) associée à la MAC bystander (02:42:0a:0a:00:07)
 ```
+
+Le ping ne fonctionnera pas car la MAC adress retournée par l'attaque arp n'est pas la bonne.  
+Cependant, on peut voir que la table ARP de la victime a bien été modifiée par l'attaque arp.  
+Ce point sert simplement à démontrer que l'attaque arp a bien fonctionné.  
 
 <br>
 
