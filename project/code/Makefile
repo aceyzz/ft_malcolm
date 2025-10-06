@@ -12,7 +12,7 @@ LIBFT_A     := $(LIBFT_DIR)/libft.a
 
 CC          := gcc
 CFLAGS      := -Wall -Wextra -Werror -g
-CPPFLAGS    := -I$(INCDIR) -I$(LIBFT_DIR)
+INCFLAGS    := -I$(INCDIR) -I$(LIBFT_DIR)
 RM          := rm -rf
 MAKEFLAGS   := --no-print-directory
 SRC         := $(shell find $(SRCDIR) -name '*.c')
@@ -40,7 +40,7 @@ $(OBJDIR):
 	@mkdir -p $(OBJDIR)
 
 $(OBJDIR)/%.o: $(SRCDIR)/%.c | $(OBJDIR)
-	@$(CC) $(CFLAGS) $(CPPFLAGS) -c $< -o $@
+	@$(CC) $(CFLAGS) $(INCFLAGS) -c $< -o $@
 	@echo "Compilation de $<"
 
 clean:
